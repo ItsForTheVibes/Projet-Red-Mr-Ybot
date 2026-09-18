@@ -19,23 +19,23 @@ func Merchant(c *character.Character) {
 	fmt.Println("    Inflicts 10 poison damage on an enemy.")
 	fmt.Println()
 
-	fmt.Println("3 - Exploit Script - 25 Credits")
+	fmt.Println("3 - Exploit Script - 25 Ethereum")
 	fmt.Println("    A powerful offensive script.")
 	fmt.Println()
 
-	fmt.Println("4 - Encrypted Data - 4 Credits")
+	fmt.Println("4 - Encrypted Data - 4 Ethereum")
 	fmt.Println("    Encrypted information used for crafting.")
 	fmt.Println()
 
-	fmt.Println("5 - Firewall Module - 7 Credits")
+	fmt.Println("5 - Firewall Module - 7 Ethereum")
 	fmt.Println("    A security component used for crafting.")
 	fmt.Println()
 
-	fmt.Println("6 - Security Token - 3 Credits")
+	fmt.Println("6 - Security Token - 3 Ethereum")
 	fmt.Println("    An authentication token used for crafting.")
 	fmt.Println()
 
-	fmt.Println("7 - API Key - 1 Credit")
+	fmt.Println("7 - API Key - 1 Ethereum")
 	fmt.Println("    An access key used for crafting.")
 	fmt.Println()
 
