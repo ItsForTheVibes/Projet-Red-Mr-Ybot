@@ -1,9 +1,8 @@
 package utils
 
 import (
-	"fmt"
-
 	"Projet-Red/src/character"
+	"fmt"
 )
 
 func DisplayInfo(c character.Character) {
