@@ -13,11 +13,12 @@ type Character struct {
 	MaxHP     int      
 	CurrentHP int
 	Ethereum 	  int  
+	Skill []string
 	Inventory []string 
 }
 
 
-func InitCharacter(name string, class string, maxhp int) *Character {
+func InitCharacter(name string, class string, maxhp int, skill []string) *Character {
 	return &Character{
 		Name:      name,
 		Class:     class,
@@ -25,7 +26,8 @@ func InitCharacter(name string, class string, maxhp int) *Character {
 		MaxHP:     maxhp,
 		CurrentHP: maxhp / 2,
 		Ethereum:      100,                    
-		Inventory: []string{"Potion", "Potion"}, 
+		Inventory: []string{"Potion", "Potion"},
+		Skill:      skill, 
 	}
 }
 
@@ -84,7 +86,7 @@ func CharacterCreation() *Character {
 	}
 
 	
-	return InitCharacter(name, class, maxHP)
+	return InitCharacter(name, class, maxHP,[]string{"Coup de poing"})
 }
 
 
