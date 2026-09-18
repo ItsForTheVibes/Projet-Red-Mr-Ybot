@@ -64,7 +64,3 @@ func HealthBar(current int, max int) string {
 		strings.Repeat("░", width-filled) +
 		"]"
 }
-
-func ClearScreen() {
-	fmt.Print("\033[H\033[2J")
-}
