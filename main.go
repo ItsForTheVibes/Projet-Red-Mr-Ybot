@@ -1,7 +1,11 @@
-package main 
+package main
 
-import "Projet-Red/src/character"
+import (
+	"Project-Red/src/economy"
+	"Projet-Red/src/character"
+)
 
-func main(){
+func main() {
 	character.Add()
+	Merchant(c)
 }

@@ -6,24 +6,33 @@ import (
 )
 
 func Merchant(c *character.Character) {
-	var choix int
+	var choice int
 
-	fmt.Println("===== MARCHAND =====")
-	fmt.Println("1 - Potion de vie - Gratuit")
-	fmt.Println("2 - Retour")
-	fmt.Print("Choix : ")
+	fmt.Println("===== MERCHANT =====")
+	fmt.Println()
+	fmt.Println("1 - AntiVirus - Free")
+	fmt.Println("When consumed, receive 10 HP")
+	fmt.Println("2 - Corruption Script")
+	fmt.Println("Description:")
+	fmt.Println("When consumed, Enemy receives 10 poison damage")
+	fmt.Println("3 - Back")
+	fmt.Print("Choice : ")
 
-	fmt.Scanln(&choix)
+	fmt.Scanln(&choice)
 
-	switch choix {
+	switch choice {
 	case 1:
-		c.Inventory = append(c.Inventory, "Potion de vie")
-		fmt.Println("Vous avez obtenu : Potion de vie")
+		c.Inventory = append(c.Inventory, "AntiVirus")
+		fmt.Println("You received : AntiVirus")
 
 	case 2:
+		c.Inventory = append(c.Inventory, "Corruption Script")
+		fmt.Println("You received : Corruption Script")
+
+	case 3:
 		return
 
 	default:
-		fmt.Println("Choix invalide.")
+		fmt.Println("Invalid choice.")
 	}
 }
