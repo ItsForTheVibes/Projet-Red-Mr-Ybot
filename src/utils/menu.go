@@ -47,7 +47,8 @@ func Menu(c character.Character) {
 	for {
 		var choix int
 
-		fmt.Println()
+		ClearScreen()
+
 		Header("PROJECT RED // COMMAND CENTER")
 		fmt.Println()
 
@@ -57,18 +58,37 @@ func Menu(c character.Character) {
 		fmt.Println()
 
 		Prompt()
-
 		fmt.Scanln(&choix)
 
 		switch choix {
 		case 1:
+			ClearScreen()
 			DisplayInfo(c)
 
+			fmt.Println()
+			fmt.Println("Press ENTER to return...")
+			fmt.Scanln()
+
 		case 2:
-			fmt.Println("===== Inventory =====")
-			fmt.Println(c.Inventory)
+			ClearScreen()
+
+			Header("STORAGE // INVENTORY")
+			fmt.Println()
+
+			if len(c.Inventory) == 0 {
+				fmt.Println("Inventory empty.")
+			} else {
+				for i, item := range c.Inventory {
+					fmt.Printf("  [%02d] %s\n", i+1, item)
+				}
+			}
+
+			fmt.Println()
+			fmt.Println("Press ENTER to return...")
+			fmt.Scanln()
 
 		case 3:
+			ClearScreen()
 			fmt.Println("Goodbye!")
 			return
 
