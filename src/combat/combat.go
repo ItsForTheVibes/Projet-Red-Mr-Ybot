@@ -39,3 +39,15 @@ func poisonPot(character *character.Character) {
         time.Sleep(1 * time.Second)
     }
 }
+
+func spellBook(character *character.Character) {
+	for _, skill := range character.Skill {
+		if skill == "Boule de Feu" {
+			fmt.Println("Vous connaissez déjà le sort Boule de Feu.")
+			return
+		}
+	}
+
+	character.Skill = append(character.Skill, "Boule de Feu")
+	fmt.Println("Vous avez appris le sort Boule de Feu !")
+}

@@ -39,7 +39,11 @@ func Merchant(c *character.Character) {
 	fmt.Println("    An access key used for crafting.")
 	fmt.Println()
 
-	fmt.Println("8 - Back")
+	fmt.Println("8 - Livre de Sort : Boule de Feu - 10 Ethereum")
+	fmt.Println("    Permet d'apprendre le sort Boule de Feu.")
+	fmt.Println()
+
+	fmt.Println("9 - Back")
 	fmt.Println()
 
 	fmt.Print("Choice: ")
@@ -75,6 +79,10 @@ func Merchant(c *character.Character) {
 		fmt.Println("You received: API Key")
 
 	case 8:
+		c.Inventory = append(c.Inventory, "Livre de Sort : Boule de Feu")
+		fmt.Println("You received: Livre de Sort : Boule de Feu")
+		
+	case 9:
 		return
 
 	default:
