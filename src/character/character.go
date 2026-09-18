@@ -10,13 +10,14 @@ type Character struct {
 	Inventory []string 
 }
 
-func InitCharacter (name string,class string,level int,maxhp int,currenthp int,inventory []string) Character{
-    return Character{
-        Name : name,
-        Class : class,
-        Level : level,
-        MaxHP : maxhp,
-        CurrentHP : currenthp,
-        Inventory : inventory,
-    }
+
+func InitCharacter(name string, class string, maxhp int) *Character {
+	return &Character{
+		Name:      name,
+		Class:     class,
+		Level:     1,                             
+		MaxHP:     maxhp,
+		CurrentHP: maxhp / 2,                    
+		Inventory: []string{"Potion", "Potion"}, 
+	}
 }
