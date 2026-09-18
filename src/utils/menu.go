@@ -6,14 +6,41 @@ import (
 )
 
 func DisplayInfo(c character.Character) {
-	fmt.Println("==== Character Info ====")
+	fmt.Println()
+	Header("PROJECT RED // OPERATOR STATUS")
 	fmt.Println()
 
-	fmt.Println("Name:", c.Name)
-	fmt.Println("Class:", c.Class)
-	fmt.Println("Level:", c.Level)
-	fmt.Println("HP:", c.CurrentHP, "/", c.MaxHP)
-	fmt.Println("Inventory:", c.Inventory)
+	fmt.Println(Cyan + "IDENTITY" + Reset)
+	fmt.Println("├─ Alias       :", c.Name)
+	fmt.Println("├─ Affiliation :", c.Class)
+	fmt.Println("└─ Level       :", c.Level)
+
+	fmt.Println()
+	fmt.Println(Cyan + "SYSTEM" + Reset)
+	fmt.Printf("├─ Integrity   : %s %d/%d\n",
+		HealthBar(c.CurrentHP, c.MaxHP),
+		c.CurrentHP,
+		c.MaxHP,
+	)
+	fmt.Println("├─ Ethereum    :", c.Ethereum, "ETH")
+	fmt.Println("└─ Inventory   :", len(c.Inventory), "items")
+
+	fmt.Println()
+	fmt.Println(Cyan + "PAYLOADS" + Reset)
+
+	if len(c.Skill) == 0 {
+		fmt.Println("└─ None")
+	} else {
+		for i, skill := range c.Skill {
+			if i == len(c.Skill)-1 {
+				fmt.Println("└─", skill)
+			} else {
+				fmt.Println("├─", skill)
+			}
+		}
+	}
+
+	fmt.Println()
 }
 
 func Menu(c character.Character) {
