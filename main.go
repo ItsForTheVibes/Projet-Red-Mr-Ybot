@@ -7,6 +7,5 @@ import (
 
 func main() {
 	c := character.CharacterCreation()
-
 	utils.Menu(*c)
 }
