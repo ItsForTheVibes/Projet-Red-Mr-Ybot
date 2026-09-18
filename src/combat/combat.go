@@ -1,6 +1,6 @@
 package combat
 
-import "honnef.co/go/tools/printf"
+import "fmt"
 
 func takePot(player *Player) { // Vérifier qu'il y a une potion dans l'inventaire
 
@@ -14,7 +14,7 @@ func takePot(player *Player) { // Vérifier qu'il y a une potion dans l'inventai
 				player.CurrentHP = player.MaxHP
 			}
 
-			printf("Vous avez utilisez la potion !\n Points de vie : %d/%d\n", player.CurrentHP, player.MaxHP)
+			fmt.Printf("Vous avez utilisez la potion !\n Points de vie : %d/%d\n", player.CurrentHP, player.MaxHP)
 
 			return
 		}
