@@ -1,11 +1,15 @@
 package main
 
 import (
-	"Project-Red/src/economy"
 	"Projet-Red/src/character"
+	"Projet-Red/src/economy"
+	"fmt"
 )
 
 func main() {
-	character.Add()
-	Merchant(c)
+	c := character.Character{}
+
+	economy.Merchant(&c)
+
+	fmt.Println("Inventory:", c.Inventory)
 }
