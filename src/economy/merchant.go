@@ -10,24 +10,29 @@ func Merchant(c *character.Character) {
 
 	fmt.Println("===== MERCHANT =====")
 	fmt.Println()
-	fmt.Println("1 - AntiVirus - Free")
-	fmt.Println("When consumed, receive 10 HP")
-	fmt.Println("2 - Corruption Script")
-	fmt.Println("Description:")
-	fmt.Println("When consumed, Enemy receives 10 poison damage")
-	fmt.Println("3 - Back")
-	fmt.Print("Choice : ")
 
+	fmt.Println("1 - AntiVirus - Free")
+	fmt.Println("    Restores 10 HP when consumed.")
+	fmt.Println()
+
+	fmt.Println("2 - Corruption Script - Free")
+	fmt.Println("    Inflicts 10 poison damage on an enemy.")
+	fmt.Println()
+
+	fmt.Println("3 - Back")
+	fmt.Println()
+
+	fmt.Print("Choice: ")
 	fmt.Scanln(&choice)
 
 	switch choice {
 	case 1:
 		c.Inventory = append(c.Inventory, "AntiVirus")
-		fmt.Println("You received : AntiVirus")
+		fmt.Println("You received: AntiVirus")
 
 	case 2:
 		c.Inventory = append(c.Inventory, "Corruption Script")
-		fmt.Println("You received : Corruption Script")
+		fmt.Println("You received: Corruption Script")
 
 	case 3:
 		return
