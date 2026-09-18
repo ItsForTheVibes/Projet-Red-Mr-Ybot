@@ -2,21 +2,22 @@ package combat
 
 import ("fmt"
 		"time"
+		"Projet-Red/src/character"
 )
 
-func takePot(player *Player) { // Vérifier qu'il y a une potion dans l'inventaire
+func takePot(character *character.Character) { // Variable, package et structure
 
-	for i, item := range player.Inventory {
+	for i, item := range character.Inventory {
 		if item == "potion" {
-			player.Inventory = append(player.Inventory[:i], player.Inventory[i+1:]...)
+			character.Inventory = append(character.Inventory[:i], character.Inventory[i+1:]...)
 
-			player.CurrentHP += 50
+			character.CurrentHP += 50
 
-			if player.CurrentHP > player.MaxHP {
-				player.CurrentHP = player.MaxHP
+			if character.CurrentHP > character.MaxHP {
+				character.CurrentHP = character.MaxHP
 			}
 
-			fmt.Printf("Vous avez utilisez la potion !\n Points de vie : %d/%d\n", player.CurrentHP, player.MaxHP)
+			fmt.Printf("Vous avez utilisez la potion !\n Points de vie : %d/%d\n", character.CurrentHP, character.MaxHP)
 
 			return
 		}
@@ -25,15 +26,15 @@ func takePot(player *Player) { // Vérifier qu'il y a une potion dans l'inventai
 }
 
 
-func poisonPot(player *Player) {
+func poisonPot(character *character.Character) {
     for i := 0; i < 3; i++ {
-        player.CurrentHP -= 10
+        character.CurrentHP -= 10
 
-        if player.CurrentHP < 0 {
-            player.CurrentHP = 0
+        if character.CurrentHP < 0 {
+            character.CurrentHP = 0
         }
 
-        fmt.Printf("Points de vie : %d/%d\n", player.CurrentHP, player.MaxHP)
+        fmt.Printf("Points de vie : %d/%d\n", character.CurrentHP, character.MaxHP)
 
         time.Sleep(1 * time.Second)
     }
