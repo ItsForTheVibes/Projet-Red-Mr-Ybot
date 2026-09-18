@@ -48,13 +48,15 @@ func Menu(c character.Character) {
 		var choix int
 
 		fmt.Println()
-		fmt.Println("===== MENU =====")
+		Header("PROJECT RED // COMMAND CENTER")
 		fmt.Println()
-		fmt.Println("1 - Display the characters information")
-		fmt.Println("2 - Access the inventory")
-		fmt.Println("3 - Quit")
+
+		fmt.Println("  [1] Operator Status")
+		fmt.Println("  [2] Inventory")
+		fmt.Println("  [3] Disconnect")
 		fmt.Println()
-		fmt.Print("Choice : ")
+
+		Prompt()
 
 		fmt.Scanln(&choix)
 
