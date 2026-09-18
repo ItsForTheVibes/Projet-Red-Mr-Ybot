@@ -7,50 +7,32 @@ import (
 )
 
 type Character struct {
-<<<<<<< HEAD
 	Name      string
 	Class     string
 	Level     int
 	MaxHP     int
 	CurrentHP int
-	Inventory []string
-}
-
-func InitCharacter(name string, class string, maxhp int) *Character {
-=======
-	Name      string   
-	Class     string   
-	Level     int      
-	MaxHP     int      
-	CurrentHP int
-	Ethereum 	  int  
-	Skill []string
+	Ethereum  int
+	Skill     []string
 	Inventory []string
 	Equipment Equipment
-
 }
 
-
 func InitCharacter(name string, class string, maxhp int, skill []string) *Character {
->>>>>>> ddfd51964fd6f039ac38aa75a9f2ec2c594e1291
 	return &Character{
 		Name:      name,
 		Class:     class,
 		Level:     1,
 		MaxHP:     maxhp,
 		CurrentHP: maxhp / 2,
-<<<<<<< HEAD
+		Ethereum:  100,
 		Inventory: []string{"Potion", "Potion"},
-=======
-		Ethereum:      100,                    
-		Inventory: []string{"Potion", "Potion"},
-		Skill: skill,
+		Skill:     skill,
 		Equipment: Equipment{
-    		Head:  "None",
-    		Torso: "None",
-    		Feet:  "None",
+			Head:  "None",
+			Torso: "None",
+			Feet:  "None",
 		},
->>>>>>> ddfd51964fd6f039ac38aa75a9f2ec2c594e1291
 	}
 }
 
@@ -148,13 +130,5 @@ func CharacterCreation() *Character {
 		fmt.Println("Choix invalide !")
 	}
 
-<<<<<<< HEAD
-	return InitCharacter(name, class, maxHP)
+	return InitCharacter(name, class, maxHP, []string{"Coup de poing"})
 }
-=======
-	
-	return InitCharacter(name, class, maxHP,[]string{"Coup de poing"})
-}
-
-
->>>>>>> ddfd51964fd6f039ac38aa75a9f2ec2c594e1291
