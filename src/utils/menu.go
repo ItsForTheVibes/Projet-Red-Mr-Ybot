@@ -6,17 +6,19 @@ import (
 )
 
 func DisplayInfo(c character.Character) {
+	color := ClassColor(c.Class)
+
 	fmt.Println()
-	Header("PROJECT RED // OPERATOR STATUS")
+	ClassHeader("PROJECT RED // COMMAND CENTER", c.Class)
 	fmt.Println()
 
-	fmt.Println(Cyan + "IDENTITY" + Reset)
+	fmt.Println(color + "IDENTITY" + Reset)
 	fmt.Println("├─ Alias       :", c.Name)
 	fmt.Println("├─ Affiliation :", c.Class)
 	fmt.Println("└─ Level       :", c.Level)
 
 	fmt.Println()
-	fmt.Println(Cyan + "SYSTEM" + Reset)
+	fmt.Println(color + "SYSTEM" + Reset)
 	fmt.Printf("├─ Integrity   : %s %d/%d\n",
 		HealthBar(c.CurrentHP, c.MaxHP),
 		c.CurrentHP,
@@ -26,7 +28,7 @@ func DisplayInfo(c character.Character) {
 	fmt.Println("└─ Inventory   :", len(c.Inventory), "items")
 
 	fmt.Println()
-	fmt.Println(Cyan + "PAYLOADS" + Reset)
+	fmt.Println(color + "PAYLOADS" + Reset)
 
 	if len(c.Skill) == 0 {
 		fmt.Println("└─ None")
