@@ -19,7 +19,27 @@ func Merchant(c *character.Character) {
 	fmt.Println("    Inflicts 10 poison damage on an enemy.")
 	fmt.Println()
 
-	fmt.Println("3 - Back")
+	fmt.Println("3 - Exploit Script - 25 Credits")
+	fmt.Println("    A powerful offensive script.")
+	fmt.Println()
+
+	fmt.Println("4 - Encrypted Data - 4 Credits")
+	fmt.Println("    Encrypted information used for crafting.")
+	fmt.Println()
+
+	fmt.Println("5 - Firewall Module - 7 Credits")
+	fmt.Println("    A security component used for crafting.")
+	fmt.Println()
+
+	fmt.Println("6 - Security Token - 3 Credits")
+	fmt.Println("    An authentication token used for crafting.")
+	fmt.Println()
+
+	fmt.Println("7 - API Key - 1 Credit")
+	fmt.Println("    An access key used for crafting.")
+	fmt.Println()
+
+	fmt.Println("8 - Back")
 	fmt.Println()
 
 	fmt.Print("Choice: ")
@@ -35,6 +55,26 @@ func Merchant(c *character.Character) {
 		fmt.Println("You received: Corruption Script")
 
 	case 3:
+		c.Inventory = append(c.Inventory, "Exploit Script")
+		fmt.Println("You received: Exploit Script")
+
+	case 4:
+		c.Inventory = append(c.Inventory, "Encrypted Data")
+		fmt.Println("You received: Encrypted Data")
+
+	case 5:
+		c.Inventory = append(c.Inventory, "Firewall Module")
+		fmt.Println("You received: Firewall Module")
+
+	case 6:
+		c.Inventory = append(c.Inventory, "Security Token")
+		fmt.Println("You received: Security Token")
+
+	case 7:
+		c.Inventory = append(c.Inventory, "API Key")
+		fmt.Println("You received: API Key")
+
+	case 8:
 		return
 
 	default:
