@@ -7,23 +7,22 @@ import (
 )
 
 type Character struct {
-	Name      string   
-	Class     string   
-	Level     int      
-	MaxHP     int      
-	CurrentHP int     
-	Inventory []string 
+	Name      string
+	Class     string
+	Level     int
+	MaxHP     int
+	CurrentHP int
+	Inventory []string
 }
-
 
 func InitCharacter(name string, class string, maxhp int) *Character {
 	return &Character{
 		Name:      name,
 		Class:     class,
-		Level:     1,                             
+		Level:     1,
 		MaxHP:     maxhp,
-		CurrentHP: maxhp / 2,                    
-		Inventory: []string{"Potion", "Potion"}, 
+		CurrentHP: maxhp / 2,
+		Inventory: []string{"Potion", "Potion"},
 	}
 }
 
@@ -33,7 +32,6 @@ func CharacterCreation() *Character {
 	var class string
 	var maxHP int
 
-	
 	for {
 		fmt.Print("Entrez le nom de votre personnage : ")
 		fmt.Scanln(&name)
@@ -56,31 +54,71 @@ func CharacterCreation() *Character {
 		fmt.Println("Erreur : le nom ne doit contenir que des lettres !")
 	}
 
-	
 	for {
 		fmt.Println("Choisissez votre classe :")
-		fmt.Println("1. Humain (100 PV)")
-		fmt.Println("2. Elfe (80 PV)")
-		fmt.Println("3. Nain (120 PV)")
-		fmt.Print("Choix (1-3) : ")
+		fmt.Println()
+
+		fmt.Println("1. Anonymous (120 HP)")
+		fmt.Println("   Affinity/Nationality:")
+		fmt.Println("   Freedom of Knowledge / Worldwide")
+		fmt.Println()
+
+		fmt.Println("2. LulzSec (100 HP)")
+		fmt.Println("   Affinity/Nationality:")
+		fmt.Println("   Troll / UK-USA")
+		fmt.Println()
+
+		fmt.Println("3. Lazarus (110 HP)")
+		fmt.Println("   Affinity/Nationality:")
+		fmt.Println("   Malicious / North Korea")
+		fmt.Println()
+
+		fmt.Println("4. White-Hat (90 HP)")
+		fmt.Println("   Affinity/Nationality:")
+		fmt.Println("   Ethical / Other")
+		fmt.Println()
+
+		fmt.Println("5. Black-Hat (95 HP)")
+		fmt.Println("   Affinity/Nationality:")
+		fmt.Println("   Malicious / Other")
+		fmt.Println()
+
+		fmt.Println("6. Script-Kiddie (60 HP)")
+		fmt.Println("   Affinity/Nationality:")
+		fmt.Println("   Beginner / Other")
+		fmt.Println()
+
+		fmt.Print("Choix (1-6) : ")
 		fmt.Scanln(&choice)
 
 		if choice == 1 {
-			class = "Humain"
-			maxHP = 100
-			break
-		} else if choice == 2 {
-			class = "Elfe"
-			maxHP = 80
-			break
-		} else if choice == 3 {
-			class = "Nain"
+			class = "Anonymous"
 			maxHP = 120
 			break
+		} else if choice == 2 {
+			class = "LulzSec"
+			maxHP = 100
+			break
+		} else if choice == 3 {
+			class = "Lazarus"
+			maxHP = 110
+			break
+		} else if choice == 4 {
+			class = "White-Hat"
+			maxHP = 90
+			break
+		} else if choice == 5 {
+			class = "Black-Hat"
+			maxHP = 95
+			break
+		} else if choice == 6 {
+			class = "Script-Kiddie"
+			maxHP = 60
+			break
 		}
+
 		fmt.Println("Choix invalide !")
 	}
 
-	
 	return InitCharacter(name, class, maxHP)
 }
