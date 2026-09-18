@@ -2,18 +2,11 @@ package main
 
 import (
 	"Projet-Red/src/character"
-	"Projet-Red/src/economy"
-	"fmt"
+	"Projet-Red/src/utils"
 )
 
 func main() {
-	c := character.Character{}
+	c := character.CharacterCreation()
 
-	economy.Merchant(&c)
-
-	fmt.Println("Inventory:", c.Inventory)
-
-	fmt.Println(utils.Red + "RED TEST" + utils.Reset)
-	fmt.Println(utils.Green + "GREEN TEST" + utils.Reset)
-	fmt.Println(utils.Cyan + "CYAN TEST" + utils.Reset)
+	utils.Menu(*c)
 }
