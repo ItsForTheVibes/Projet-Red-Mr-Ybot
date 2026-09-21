@@ -40,7 +40,7 @@ func poisonPot(character *character.Character) {
     }
 }
 
-func spellBook(character *character.Character) {
+func SpellBook(character *character.Character) {
 	for _, skill := range character.Skill {
 		if skill == "Boule de Feu" {
 			fmt.Println("Vous connaissez déjà le sort Boule de Feu.")
@@ -49,5 +49,5 @@ func spellBook(character *character.Character) {
 	}
 
 	character.Skill = append(character.Skill, "Boule de Feu")
-	fmt.Println("Vous avez appris le sort Boule de Feu !")
+	println("Vous avez appris le sort Boule de Feu !")
 }
