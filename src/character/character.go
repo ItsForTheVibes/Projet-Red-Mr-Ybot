@@ -36,6 +36,14 @@ func InitCharacter(name string, class string, maxhp int, skill []string) *Charac
 	}
 }
 
+func IsDead(c *Character) {
+	if c.CurrentHP == 0 {
+		println("Vous êtes mort !")
+		c.CurrentHP = c.MaxHP / 2
+		fmt.Printf("Vous êtes ressuscité avec %d/%d PV.\n", c.CurrentHP, c.MaxHP)
+	}
+}
+
 func CharacterCreation() *Character {
 	var name string
 	var choice int

@@ -26,28 +26,17 @@ func takePot(character *character.Character) { // Variable, package et structure
 }
 
 
-func poisonPot(character *character.Character) {
+func poisonPot(c *character.Character) {
     for i := 0; i < 3; i++ {
-        character.CurrentHP -= 10
+        c.CurrentHP -= 10
 
-        if character.CurrentHP < 0 {
-            character.CurrentHP = 0
+        if c.CurrentHP < 0 {
+            c.CurrentHP = 0
         }
 
-        fmt.Printf("Points de vie : %d/%d\n", character.CurrentHP, character.MaxHP)
+        fmt.Printf("Points de vie : %d/%d\n", c.CurrentHP, c.MaxHP)
 
+		character.IsDead(c)
         time.Sleep(1 * time.Second)
     }
-}
-
-func SpellBook(character *character.Character) {
-	for _, skill := range character.Skill {
-		if skill == "Boule de Feu" {
-			fmt.Println("Vous connaissez déjà le sort Boule de Feu.")
-			return
-		}
-	}
-
-	character.Skill = append(character.Skill, "Boule de Feu")
-	println("Vous avez appris le sort Boule de Feu !")
 }
