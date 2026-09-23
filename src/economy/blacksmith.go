@@ -2,116 +2,135 @@ package economy
 
 import (
 	"Projet-Red/src/character"
+	"Projet-Red/src/items"
 	"fmt"
 )
 
 func Blacksmith(c *character.Character) {
 	for {
+		recipes := items.Recipes()
+
+		fmt.Println()
+		fmt.Println("╔══════════════════════════════════════════════╗")
+		fmt.Println("║ HARDWARE LAB // FABRICATION TERMINAL        ║")
+		fmt.Println("╚══════════════════════════════════════════════╝")
+		fmt.Println()
+
+		fmt.Printf("Wallet  : %d ETH\n", c.Ethereum)
+		fmt.Printf(
+			"Storage : %d/%d\n",
+			len(c.Inventory),
+			c.InventoryCapacity,
+		)
+
+		fmt.Println()
+		fmt.Println("AVAILABLE BLUEPRINTS")
+		fmt.Println()
+
+		for i, recipe := range recipes {
+			fmt.Printf(
+				"[%d] %s // %d ETH\n",
+				i+1,
+				recipe.Name,
+				recipe.Price,
+			)
+
+			fmt.Printf(
+				"    %s\n",
+				recipe.Description,
+			)
+
+			fmt.Println("    Requirements:")
+
+			for _, material := range recipe.Materials {
+				owned := character.CountItem(
+					c,
+					material.Name,
+				)
+
+				fmt.Printf(
+					"      - %s x%d // owned: %d\n",
+					material.Name,
+					material.Quantity,
+					owned,
+				)
+			}
+
+			fmt.Println()
+		}
+
+		fmt.Println("[0] Leave hardware lab")
+		fmt.Println()
+
 		var choice int
 
-		fmt.Println()
-		fmt.Println("===== BLACKSMITH =====")
-		fmt.Println()
-		fmt.Println("Ethereum :", c.Ethereum)
-		fmt.Println()
-
-		fmt.Println("PAYLOADS")
-		fmt.Println("1 - AntiVirus")
-		fmt.Println("2 - Corruption Script")
-		fmt.Println("3 - Exploit Script")
-		fmt.Println("4 - Encrypted Data")
-		fmt.Println("5 - Firewall Module")
-		fmt.Println("6 - Security Token")
-		fmt.Println("7 - API Key")
-		fmt.Println("8 - Livre de Sort : Boule de Feu")
-		fmt.Println()
-
-		fmt.Println("EQUIPMENT")
-		fmt.Println("9 - Chapeau de l'aventurier")
-		fmt.Println("10 - Tunique de l'aventurier")
-		fmt.Println("11 - Bottes de l'aventurier")
-		fmt.Println()
-
-		fmt.Println("12 - Back")
-		fmt.Println()
-
-		fmt.Println("Crafting cost: 5 Ethereum")
-		fmt.Print("Choice: ")
-
+		fmt.Print("root@forge:~$ ")
 		fmt.Scanln(&choice)
 
-		var item string
-
-		switch choice {
-		case 1:
-			item = "AntiVirus"
-
-		case 2:
-			item = "Corruption Script"
-
-		case 3:
-			item = "Exploit Script"
-
-		case 4:
-			item = "Encrypted Data"
-
-		case 5:
-			item = "Firewall Module"
-
-		case 6:
-			item = "Security Token"
-
-		case 7:
-			item = "API Key"
-
-		case 8:
-			item = "Livre de Sort : Boule de Feu"
-
-		case 9:
-			item = "Chapeau de l'aventurier"
-
-		case 10:
-			item = "Tunique de l'aventurier"
-
-		case 11:
-			item = "Bottes de l'aventurier"
-
-		case 12:
+		if choice == 0 {
 			return
+		}
 
-		default:
-			fmt.Println("Invalid choice.")
+		if choice < 1 || choice > len(recipes) {
+			fmt.Println("[-] Invalid blueprint.")
 			continue
 		}
 
-		craftItem(c, item)
+		craftItem(c, recipes[choice-1])
 	}
 }
 
-func craftItem(c *character.Character, item string) {
-	const craftPrice = 5
+func craftItem(
+	c *character.Character,
+	recipe items.Recipe,
+) {
+	if c.Ethereum < recipe.Price {
+		fmt.Printf(
+			"[-] Need %d ETH to fabricate this equipment.\n",
+			recipe.Price,
+		)
 
-	if c.Ethereum < craftPrice {
-		fmt.Println("Not enough Ethereum.")
 		return
 	}
 
-	if len(c.Inventory) >= 10 {
-		fmt.Println("Inventory full.")
+	if len(c.Inventory) >= c.InventoryCapacity {
+		fmt.Println("[-] Not enough storage space.")
 		return
 	}
 
-	c.Ethereum -= craftPrice
+	for _, material := range recipe.Materials {
+		owned := character.CountItem(
+			c,
+			material.Name,
+		)
 
-	character.AddItem(c, item)
+		if owned < material.Quantity {
+			fmt.Printf(
+				"[-] Missing %s: %d/%d available.\n",
+				material.Name,
+				owned,
+				material.Quantity,
+			)
 
-	fmt.Printf(
-		"%s crafted successfully!\n",
-		item,
-	)
+			return
+		}
+	}
 
-	fmt.Printf(
-		"Cost: %d Ethereum\n",
-		craftPrice,
-	)
+	for _, material := range recipe.Materials {
+		character.RemoveItem(
+			c,
+			material.Name,
+			material.Quantity,
+		)
+	}
+
+	c.Ethereum -= recipe.Price
+
+	character.AddItem(c, recipe.Name)
+
+	fmt.Println()
+	fmt.Println("[+] FABRICATION COMPLETE")
+	fmt.Printf("[+] Equipment: %s\n", recipe.Name)
+	fmt.Printf("[-] Cost: %d ETH\n", recipe.Price)
+	fmt.Printf("[+] Wallet: %d ETH\n", c.Ethereum)
 }

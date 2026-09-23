@@ -2,250 +2,227 @@ package combat
 
 import (
 	"Projet-Red/src/character"
+	"Projet-Red/src/items"
 	"fmt"
 	"time"
 )
 
-func StartCombat(c *character.Character) {
-	enemy := NewMonster("Malware Bot", 60, 10)
+func TrainingFight(c *character.Character) {
+	enemy := InitTrainingBot()
+	turn := 1
 
 	fmt.Println()
-	fmt.Println("===== COMBAT =====")
-	fmt.Printf("Un %s apparaît !\n", enemy.Name)
+	fmt.Println("╔══════════════════════════════════════════════╗")
+	fmt.Println("║ TRAINING NETWORK // COMBAT SIMULATION       ║")
+	fmt.Println("╚══════════════════════════════════════════════╝")
+	fmt.Println()
+
+	fmt.Printf(
+		"[!] Hostile process detected: %s\n",
+		enemy.Name,
+	)
 
 	for c.CurrentHP > 0 && enemy.CurrentHP > 0 {
 		fmt.Println()
+		fmt.Printf(
+			"========== TURN %d ==========\n",
+			turn,
+		)
+
+		displayCombatStatus(c, enemy)
+
+		if !CharacterTurn(c, enemy) {
+			continue
+		}
+
+		if enemy.CurrentHP <= 0 {
+			fmt.Println()
+			fmt.Printf(
+				"[+] %s terminated.\n",
+				enemy.Name,
+			)
+
+			fmt.Println("[+] Training simulation complete.")
+			return
+		}
+
+		GoblinPattern(c, enemy, turn)
+
+		if character.IsDead(c) {
+			return
+		}
+
+		turn++
+	}
+}
+
+func CharacterTurn(
+	c *character.Character,
+	enemy *Monster,
+) bool {
+	fmt.Println()
+	fmt.Println("PLAYER ACTION")
+	fmt.Println("[1] Basic Attack")
+	fmt.Println("[2] Inventory")
+	fmt.Println("[3] Skills")
+	fmt.Println()
+
+	var choice int
+
+	fmt.Print("root@combat:~$ ")
+	fmt.Scanln(&choice)
+
+	switch choice {
+	case 1:
+		damage := 5
+
+		enemy.CurrentHP -= damage
+
+		if enemy.CurrentHP < 0 {
+			enemy.CurrentHP = 0
+		}
 
 		fmt.Printf(
-			"%s : %d/%d HP\n",
-			c.Name,
-			c.CurrentHP,
-			c.MaxHP,
+			"[>] Basic Attack deals %d damage to %s.\n",
+			damage,
+			enemy.Name,
 		)
 
 		fmt.Printf(
-			"%s : %d/%d HP\n",
+			"[>] %s HP: %d/%d\n",
 			enemy.Name,
 			enemy.CurrentHP,
 			enemy.MaxHP,
 		)
 
-		fmt.Println()
-		fmt.Println("1 - Coup de poing")
-		fmt.Println("2 - Potion de vie")
-		fmt.Println("3 - Payload")
-		fmt.Println("4 - Boule de Feu")
-		fmt.Println("5 - Fuir")
+		return true
 
-		var choice int
+	case 2:
+		return combatInventory(c, enemy)
 
-		fmt.Print("Choix : ")
-		fmt.Scanln(&choice)
+	case 3:
+		return useSkill(c, enemy)
 
-		actionTaken := false
-
-		switch choice {
-		case 1:
-			damage := 10
-
-			enemy.CurrentHP -= damage
-
-			if enemy.CurrentHP < 0 {
-				enemy.CurrentHP = 0
-			}
-
-			fmt.Printf(
-				"Vous infligez %d dégâts à %s.\n",
-				damage,
-				enemy.Name,
-			)
-
-			actionTaken = true
-
-		case 2:
-			actionTaken = takePotion(c)
-
-		case 3:
-			actionTaken = usePayload(c, enemy)
-
-		case 4:
-			actionTaken = useFireball(c, enemy)
-
-		case 5:
-			fmt.Println("Vous fuyez le combat.")
-			return
-
-		default:
-			fmt.Println("Choix invalide.")
-		}
-
-		if !actionTaken {
-			continue
-		}
-
-		if enemy.CurrentHP <= 0 {
-			fmt.Printf(
-				"\n%s a été vaincu !\n",
-				enemy.Name,
-			)
-
-			reward := 10
-
-			c.Ethereum += reward
-
-			fmt.Printf(
-				"Vous gagnez %d Ethereum.\n",
-				reward,
-			)
-
-			return
-		}
-
-		enemyAttack(c, enemy)
-
-		if character.IsDead(c) {
-			return
-		}
+	default:
+		fmt.Println("[-] Invalid action.")
+		return false
 	}
 }
 
-func enemyAttack(c *character.Character, enemy *Monster) {
-	c.CurrentHP -= enemy.Attack
+func GoblinPattern(
+	c *character.Character,
+	enemy *Monster,
+	turn int,
+) {
+	damage := enemy.Attack
+
+	if turn%3 == 0 {
+		damage = enemy.Attack * 2
+
+		fmt.Println()
+		fmt.Println("[!] CRITICAL ATTACK PATTERN DETECTED")
+	}
+
+	c.CurrentHP -= damage
 
 	if c.CurrentHP < 0 {
 		c.CurrentHP = 0
 	}
 
 	fmt.Printf(
-		"%s vous attaque et inflige %d dégâts.\n",
+		"[<] %s attacks %s for %d damage.\n",
 		enemy.Name,
-		enemy.Attack,
+		c.Name,
+		damage,
+	)
+
+	fmt.Printf(
+		"[<] %s HP: %d/%d\n",
+		c.Name,
+		c.CurrentHP,
+		c.MaxHP,
 	)
 }
 
-func takePotion(c *character.Character) bool {
-	for i, item := range c.Inventory {
-		if item == "Potion de vie" {
-			c.Inventory = append(
-				c.Inventory[:i],
-				c.Inventory[i+1:]...,
+func combatInventory(
+	c *character.Character,
+	enemy *Monster,
+) bool {
+	fmt.Println()
+	fmt.Println("=== COMBAT INVENTORY ===")
+
+	usableItems := []string{}
+
+	for _, item := range c.Inventory {
+		if item == items.AntiVirusPatch ||
+			item == items.CorruptionScript {
+
+			usableItems = append(
+				usableItems,
+				item,
 			)
-
-			c.CurrentHP += 50
-
-			if c.CurrentHP > c.MaxHP {
-				c.CurrentHP = c.MaxHP
-			}
-
-			fmt.Printf(
-				"Potion utilisée ! HP : %d/%d\n",
-				c.CurrentHP,
-				c.MaxHP,
-			)
-
-			return true
 		}
 	}
 
-	fmt.Println("Vous n'avez pas de Potion de vie.")
+	if len(usableItems) == 0 {
+		fmt.Println("[!] No combat items available.")
+		return false
+	}
 
-	return false
-}
+	for i, item := range usableItems {
+		fmt.Printf(
+			"[%d] %s\n",
+			i+1,
+			item,
+		)
+	}
 
-func usePayload(c *character.Character, enemy *Monster) bool {
-	fmt.Println()
-	fmt.Println("===== PAYLOADS =====")
-	fmt.Println("1 - AntiVirus")
-	fmt.Println("2 - Corruption Script")
-	fmt.Println("3 - Exploit Script")
-	fmt.Println("4 - Retour")
+	fmt.Println("[0] Return")
 
 	var choice int
 
-	fmt.Print("Choix : ")
+	fmt.Print("root@combat-storage:~$ ")
 	fmt.Scanln(&choice)
 
-	switch choice {
-	case 1:
-		if !removeItem(c, "AntiVirus") {
-			fmt.Println("Vous ne possédez pas AntiVirus.")
-			return false
-		}
-
-		c.CurrentHP += 10
-
-		if c.CurrentHP > c.MaxHP {
-			c.CurrentHP = c.MaxHP
-		}
-
-		fmt.Println("AntiVirus utilisé : +10 HP.")
-
-		return true
-
-	case 2:
-		if !removeItem(c, "Corruption Script") {
-			fmt.Println("Vous ne possédez pas Corruption Script.")
-			return false
-		}
-
-		fmt.Println("Corruption Script lancé !")
-
-		poisonPot(enemy)
-
-		return true
-
-	case 3:
-		if !removeItem(c, "Exploit Script") {
-			fmt.Println("Vous ne possédez pas Exploit Script.")
-			return false
-		}
-
-		enemy.CurrentHP -= 25
-
-		if enemy.CurrentHP < 0 {
-			enemy.CurrentHP = 0
-		}
-
-		fmt.Println("Exploit Script inflige 25 dégâts.")
-
-		return true
-
-	case 4:
-		return false
-
-	default:
-		fmt.Println("Choix invalide.")
+	if choice == 0 {
 		return false
 	}
-}
 
-func useFireball(c *character.Character, enemy *Monster) bool {
-	for _, skill := range c.Skill {
-		if skill == "Boule de Feu" {
-			damage := 20
-
-			enemy.CurrentHP -= damage
-
-			if enemy.CurrentHP < 0 {
-				enemy.CurrentHP = 0
-			}
-
-			fmt.Printf(
-				"Boule de Feu inflige %d dégâts !\n",
-				damage,
-			)
-
-			return true
-		}
+	if choice < 1 || choice > len(usableItems) {
+		fmt.Println("[-] Invalid item.")
+		return false
 	}
 
-	fmt.Println("Vous ne connaissez pas Boule de Feu.")
+	item := usableItems[choice-1]
+
+	switch item {
+	case items.AntiVirusPatch:
+		character.TakePot(c)
+		return true
+
+	case items.CorruptionScript:
+		if !character.RemoveItem(
+			c,
+			items.CorruptionScript,
+			1,
+		) {
+			return false
+		}
+
+		PoisonPot(enemy)
+		return true
+	}
 
 	return false
 }
 
-func poisonPot(enemy *Monster) {
-	for i := 0; i < 3; i++ {
+func PoisonPot(enemy *Monster) {
+	fmt.Printf(
+		"[>] Corruption Script injected into %s.\n",
+		enemy.Name,
+	)
+
+	for i := 1; i <= 3; i++ {
 		enemy.CurrentHP -= 10
 
 		if enemy.CurrentHP < 0 {
@@ -253,7 +230,8 @@ func poisonPot(enemy *Monster) {
 		}
 
 		fmt.Printf(
-			"%s prend 10 dégâts de poison. HP : %d/%d\n",
+			"[>] Corruption %d/3 // %s HP: %d/%d\n",
+			i,
 			enemy.Name,
 			enemy.CurrentHP,
 			enemy.MaxHP,
@@ -263,21 +241,95 @@ func poisonPot(enemy *Monster) {
 			return
 		}
 
-		time.Sleep(1 * time.Second)
+		time.Sleep(time.Second)
 	}
 }
 
-func removeItem(c *character.Character, itemName string) bool {
-	for i, item := range c.Inventory {
-		if item == itemName {
-			c.Inventory = append(
-				c.Inventory[:i],
-				c.Inventory[i+1:]...,
-			)
+func useSkill(
+	c *character.Character,
+	enemy *Monster,
+) bool {
+	fmt.Println()
+	fmt.Println("=== INSTALLED EXPLOITS ===")
 
-			return true
-		}
+	for i, skill := range c.Skill {
+		fmt.Printf(
+			"[%d] %s\n",
+			i+1,
+			skill,
+		)
 	}
 
-	return false
+	fmt.Println("[0] Return")
+
+	var choice int
+
+	fmt.Print("root@exploit:~$ ")
+	fmt.Scanln(&choice)
+
+	if choice == 0 {
+		return false
+	}
+
+	if choice < 1 || choice > len(c.Skill) {
+		fmt.Println("[-] Invalid exploit.")
+		return false
+	}
+
+	skill := c.Skill[choice-1]
+
+	damage := 0
+
+	switch skill {
+	case items.PacketPunch:
+		damage = 8
+
+	case items.ZeroDayBlast:
+		damage = 18
+
+	default:
+		fmt.Println("[-] Unknown exploit.")
+		return false
+	}
+
+	enemy.CurrentHP -= damage
+
+	if enemy.CurrentHP < 0 {
+		enemy.CurrentHP = 0
+	}
+
+	fmt.Printf(
+		"[>] %s executed // %d damage.\n",
+		skill,
+		damage,
+	)
+
+	fmt.Printf(
+		"[>] %s HP: %d/%d\n",
+		enemy.Name,
+		enemy.CurrentHP,
+		enemy.MaxHP,
+	)
+
+	return true
+}
+
+func displayCombatStatus(
+	c *character.Character,
+	enemy *Monster,
+) {
+	fmt.Println()
+	fmt.Printf(
+		"OPERATOR // %s // HP %d/%d\n",
+		c.Name,
+		c.CurrentHP,
+		c.MaxHP,
+	)
+
+	fmt.Printf(
+		"TARGET   // %s // HP %d/%d\n",
+		enemy.Name,
+		enemy.CurrentHP,
+		enemy.MaxHP,
+	)
 }

@@ -7,19 +7,23 @@ import (
 	"fmt"
 )
 
-func DisplayInfo(c character.Character) {
+func DisplayInfo(c *character.Character) {
 	color := ClassColor(c.Class)
 
 	fmt.Println()
-	ClassHeader("PROJECT RED // COMMAND CENTER", c.Class)
+
+	Header("PROJECT RED // OPERATOR STATUS")
+
 	fmt.Println()
 
 	fmt.Println(color + "IDENTITY" + Reset)
+
 	fmt.Println("├─ Alias       :", c.Name)
 	fmt.Println("├─ Affiliation :", c.Class)
 	fmt.Println("└─ Level       :", c.Level)
 
 	fmt.Println()
+
 	fmt.Println(color + "SYSTEM" + Reset)
 
 	fmt.Printf(
@@ -29,61 +33,100 @@ func DisplayInfo(c character.Character) {
 		c.MaxHP,
 	)
 
-	fmt.Println("├─ Ethereum    :", c.Ethereum, "ETH")
-	fmt.Println("└─ Inventory   :", len(c.Inventory), "items")
+	fmt.Println(
+		"├─ Ethereum    :",
+		c.Ethereum,
+		"ETH",
+	)
+
+	fmt.Printf(
+		"└─ Storage     : %d/%d\n",
+		len(c.Inventory),
+		c.InventoryCapacity,
+	)
 
 	fmt.Println()
-	fmt.Println(color + "PAYLOADS" + Reset)
 
-	if len(c.Skill) == 0 {
-		fmt.Println("└─ None")
-	} else {
-		for i, skill := range c.Skill {
-			if i == len(c.Skill)-1 {
-				fmt.Println("└─", skill)
-			} else {
-				fmt.Println("├─", skill)
-			}
+	fmt.Println(color + "EQUIPMENT" + Reset)
+
+	fmt.Println(
+		"├─ Head  :",
+		displayEmpty(c.Equipment.Head),
+	)
+
+	fmt.Println(
+		"├─ Chest :",
+		displayEmpty(c.Equipment.Chest),
+	)
+
+	fmt.Println(
+		"└─ Feet  :",
+		displayEmpty(c.Equipment.Feet),
+	)
+
+	fmt.Println()
+
+	fmt.Println(color + "EXPLOITS" + Reset)
+
+	for i, skill := range c.Skill {
+		if i == len(c.Skill)-1 {
+			fmt.Println("└─", skill)
+		} else {
+			fmt.Println("├─", skill)
 		}
 	}
-
-	fmt.Println()
 }
 
 func Menu(c *character.Character) {
 	for {
-		var choix int
-
 		ClearScreen()
 
 		Header("PROJECT RED // COMMAND CENTER")
+
+		fmt.Println()
+		fmt.Printf(
+			"Operator: %s // %s\n",
+			c.Name,
+			c.Class,
+		)
+
+		fmt.Printf(
+			"HP: %d/%d // ETH: %d\n",
+			c.CurrentHP,
+			c.MaxHP,
+			c.Ethereum,
+		)
+
 		fmt.Println()
 
-		fmt.Println("  [1] Operator Status")
-		fmt.Println("  [2] Inventory")
-		fmt.Println("  [3] Merchant")
-		fmt.Println("  [4] Blacksmith")
-		fmt.Println("  [5] Combat")
-		fmt.Println("  [6] Disconnect")
+		fmt.Println("[1] Operator Status")
+		fmt.Println("[2] Storage / Inventory")
+		fmt.Println("[3] Darknet Market")
+		fmt.Println("[4] Hardware Lab")
+		fmt.Println("[5] Training Network")
+		fmt.Println("[6] Disconnect")
+
 		fmt.Println()
+
+		var choice int
 
 		Prompt()
-		fmt.Scanln(&choix)
+		fmt.Scanln(&choice)
 
-		switch choix {
+		switch choice {
 		case 1:
 			ClearScreen()
 
-			DisplayInfo(*c)
+			DisplayInfo(c)
 
-			waitForEnter()
+			WaitForEnter()
 
 		case 2:
 			ClearScreen()
 
 			character.AccessInventory(c)
 
-			waitForEnter()
+			WaitForEnter()
 
 		case 3:
 			ClearScreen()
@@ -98,25 +141,28 @@ func Menu(c *character.Character) {
 		case 5:
 			ClearScreen()
 
-			combat.StartCombat(c)
+			combat.TrainingFight(c)
 
-			waitForEnter()
+			WaitForEnter()
 
 		case 6:
 			ClearScreen()
 
-			fmt.Println("Goodbye!")
+			fmt.Println("[+] Connection terminated.")
 			return
 
 		default:
-			fmt.Println("Invalid choice.")
-			waitForEnter()
+			Error("Invalid command.")
+
+			WaitForEnter()
 		}
 	}
 }
 
-func waitForEnter() {
-	fmt.Println()
-	fmt.Println("Press ENTER to return...")
-	fmt.Scanln()
+func displayEmpty(value string) string {
+	if value == "" {
+		return "[EMPTY]"
+	}
+
+	return value
 }
