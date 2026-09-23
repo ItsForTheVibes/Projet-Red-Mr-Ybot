@@ -23,13 +23,13 @@ type Character struct {
 
 func InitCharacter(name string, class string, maxHP int) *Character {
 	return &Character{
-		Name:              name,
-		Class:             class,
-		Level:             1,
-		MaxHP:             maxHP,
-		CurrentHP:         maxHP / 2,
-		Ethereum:          100,
-		Skill:             []string{items.PacketPunch},
+		Name:      name,
+		Class:     class,
+		Level:     1,
+		MaxHP:     maxHP,
+		CurrentHP: maxHP / 2,
+		Ethereum:  100,
+		Skill:     []string{items.PacketPunch},
 		Inventory: []string{
 			items.AntiVirusPatch,
 			items.AntiVirusPatch,
