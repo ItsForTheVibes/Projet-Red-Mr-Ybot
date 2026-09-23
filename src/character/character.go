@@ -26,14 +26,24 @@ func InitCharacter(name string, class string, maxhp int, skill []string) *Charac
 		MaxHP:     maxhp,
 		CurrentHP: maxhp / 2,
 		Ethereum:  100,
-		Inventory: []string{"Potion", "Potion"},
+		Inventory: []string{"Potion de vie", "Potion de vie", "Potion de vie"},
 		Skill:     skill,
 		Equipment: Equipment{
-			Head:  "None",
-			Torso: "None",
-			Feet:  "None",
+			Head:  "",
+			Chest: "",
+			Feet:  "",
 		},
 	}
+}
+
+func IsDead(c *Character) bool {
+	if c.CurrentHP <= 0 {
+		fmt.Println("💀 Vous êtes mort !")
+		c.CurrentHP = c.MaxHP / 2
+		fmt.Printf("🔄 Vous êtes ressuscité avec %d/%d PV.\n", c.CurrentHP, c.MaxHP)
+		return true
+	}
+	return false
 }
 
 func CharacterCreation() *Character {
