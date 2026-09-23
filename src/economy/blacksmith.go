@@ -9,6 +9,7 @@ func Blacksmith(c *character.Character) {
 	for {
 		var choice int
 
+		fmt.Println()
 		fmt.Println("===== BLACKSMITH =====")
 		fmt.Println()
 		fmt.Println("Ethereum :", c.Ethereum)
@@ -36,6 +37,7 @@ func Blacksmith(c *character.Character) {
 
 		fmt.Println("Crafting cost: 5 Ethereum")
 		fmt.Print("Choice: ")
+
 		fmt.Scanln(&choice)
 
 		var item string
@@ -103,6 +105,13 @@ func craftItem(c *character.Character, item string) {
 
 	character.AddItem(c, item)
 
-	fmt.Printf("%s crafted successfully!\n", item)
-	fmt.Printf("Cost: %d Ethereum\n", craftPrice)
+	fmt.Printf(
+		"%s crafted successfully!\n",
+		item,
+	)
+
+	fmt.Printf(
+		"Cost: %d Ethereum\n",
+		craftPrice,
+	)
 }

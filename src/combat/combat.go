@@ -15,8 +15,20 @@ func StartCombat(c *character.Character) {
 
 	for c.CurrentHP > 0 && enemy.CurrentHP > 0 {
 		fmt.Println()
-		fmt.Printf("%s : %d/%d HP\n", c.Name, c.CurrentHP, c.MaxHP)
-		fmt.Printf("%s : %d/%d HP\n", enemy.Name, enemy.CurrentHP, enemy.MaxHP)
+
+		fmt.Printf(
+			"%s : %d/%d HP\n",
+			c.Name,
+			c.CurrentHP,
+			c.MaxHP,
+		)
+
+		fmt.Printf(
+			"%s : %d/%d HP\n",
+			enemy.Name,
+			enemy.CurrentHP,
+			enemy.MaxHP,
+		)
 
 		fmt.Println()
 		fmt.Println("1 - Coup de poing")
@@ -42,7 +54,11 @@ func StartCombat(c *character.Character) {
 				enemy.CurrentHP = 0
 			}
 
-			fmt.Printf("Vous infligez %d dégâts à %s.\n", damage, enemy.Name)
+			fmt.Printf(
+				"Vous infligez %d dégâts à %s.\n",
+				damage,
+				enemy.Name,
+			)
 
 			actionTaken = true
 
@@ -68,12 +84,19 @@ func StartCombat(c *character.Character) {
 		}
 
 		if enemy.CurrentHP <= 0 {
-			fmt.Printf("\n%s a été vaincu !\n", enemy.Name)
+			fmt.Printf(
+				"\n%s a été vaincu !\n",
+				enemy.Name,
+			)
 
 			reward := 10
+
 			c.Ethereum += reward
 
-			fmt.Printf("Vous gagnez %d Ethereum.\n", reward)
+			fmt.Printf(
+				"Vous gagnez %d Ethereum.\n",
+				reward,
+			)
 
 			return
 		}
@@ -125,6 +148,7 @@ func takePotion(c *character.Character) bool {
 	}
 
 	fmt.Println("Vous n'avez pas de Potion de vie.")
+
 	return false
 }
 
@@ -155,6 +179,7 @@ func usePayload(c *character.Character, enemy *Monster) bool {
 		}
 
 		fmt.Println("AntiVirus utilisé : +10 HP.")
+
 		return true
 
 	case 2:
@@ -182,6 +207,7 @@ func usePayload(c *character.Character, enemy *Monster) bool {
 		}
 
 		fmt.Println("Exploit Script inflige 25 dégâts.")
+
 		return true
 
 	case 4:
@@ -214,6 +240,7 @@ func useFireball(c *character.Character, enemy *Monster) bool {
 	}
 
 	fmt.Println("Vous ne connaissez pas Boule de Feu.")
+
 	return false
 }
 
@@ -232,11 +259,11 @@ func poisonPot(enemy *Monster) {
 			enemy.MaxHP,
 		)
 
-		time.Sleep(1 * time.Second)
-
 		if enemy.CurrentHP <= 0 {
 			return
 		}
+
+		time.Sleep(1 * time.Second)
 	}
 }
 

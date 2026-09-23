@@ -1,63 +1,89 @@
 package character
 
 import "fmt"
-	
 
 func AccessInventory(c *Character) {
 	fmt.Println("=== INVENTAIRE ===")
+	fmt.Println()
 
-	
 	if len(c.Inventory) == 0 {
 		fmt.Println("Votre inventaire est vide.")
 		return
 	}
 
-	
 	for i, item := range c.Inventory {
 		fmt.Printf("%d. %s\n", i+1, item)
 	}
 
+	fmt.Println("0. Retour")
+	fmt.Println()
+
 	var choice int
-	print("Choisissez un objet à utiliser : ")
+
+	fmt.Print("Choisissez un objet à utiliser : ")
 	fmt.Scanln(&choice)
 
+	if choice == 0 {
+		return
+	}
+
 	if choice < 1 || choice > len(c.Inventory) {
-		println("Choix invalide.")
+		fmt.Println("Choix invalide.")
 		return
 	}
 
 	item := c.Inventory[choice-1]
 
-	if item == "Livre de Sort : Boule de Feu" {
-		spellBook(c)
+	switch item {
+	case "Chapeau de l'aventurier",
+		"Tunique de l'aventurier",
+		"Bottes de l'aventurier":
 
-		c.Inventory = append(c.Inventory[:choice-1], c.Inventory[choice:]...)
+		c.EquipItem(item)
 		return
-	}
 
-	fmt.Println("Cet objet ne peut pas être utilisé ici.")
+	case "Livre de Sort : Boule de Feu":
+
+		if spellBook(c) {
+			c.Inventory = append(
+				c.Inventory[:choice-1],
+				c.Inventory[choice:]...,
+			)
+		}
+
+		return
+
+	default:
+		fmt.Println("Cet objet ne peut pas être utilisé ici.")
+	}
 }
 
-func spellBook(character *Character) {
-	for _, skill := range character.Skill {
+func spellBook(c *Character) bool {
+	for _, skill := range c.Skill {
 		if skill == "Boule de Feu" {
 			fmt.Println("Vous connaissez déjà le sort Boule de Feu.")
-			return
+			return false
 		}
 	}
 
-	character.Skill = append(character.Skill, "Boule de Feu")
-	println("Vous avez appris le sort Boule de Feu !")
+	c.Skill = append(c.Skill, "Boule de Feu")
+
+	fmt.Println("Vous avez appris le sort Boule de Feu !")
+
+	return true
 }
 
 func AddItem(c *Character, item string) {
-	
 	if len(c.Inventory) >= 10 {
-		fmt.Printf(" Inventaire plein ! Impossible d'ajouter '%s'.\n", item)
+		fmt.Printf(
+			"Inventaire plein ! Impossible d'ajouter '%s'.\n",
+			item,
+		)
+
 		return
 	}
 
-	
 	c.Inventory = append(c.Inventory, item)
-	fmt.Printf(" %s ajouté à l'inventaire.\n", item)
+
+	fmt.Printf("%s ajouté à l'inventaire.\n", item)
 }

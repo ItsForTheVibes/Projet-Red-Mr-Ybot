@@ -9,6 +9,7 @@ func Merchant(c *character.Character) {
 	for {
 		var choice int
 
+		fmt.Println()
 		fmt.Println("===== MERCHANT =====")
 		fmt.Println()
 		fmt.Println("Ethereum :", c.Ethereum)
@@ -51,7 +52,11 @@ func Merchant(c *character.Character) {
 			buyItem(c, "API Key", 1)
 
 		case 8:
-			buyItem(c, "Livre de Sort : Boule de Feu", 10)
+			buyItem(
+				c,
+				"Livre de Sort : Boule de Feu",
+				10,
+			)
 
 		case 9:
 			return
@@ -74,11 +79,19 @@ func buyItem(c *character.Character, item string, price int) {
 	}
 
 	c.Ethereum -= price
+
 	character.AddItem(c, item)
 
 	if price > 0 {
-		fmt.Printf("You bought %s for %d Ethereum.\n", item, price)
+		fmt.Printf(
+			"You bought %s for %d Ethereum.\n",
+			item,
+			price,
+		)
 	} else {
-		fmt.Printf("You received %s.\n", item)
+		fmt.Printf(
+			"You received %s.\n",
+			item,
+		)
 	}
 }
