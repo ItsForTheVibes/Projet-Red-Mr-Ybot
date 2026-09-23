@@ -30,7 +30,7 @@ func InitCharacter(name string, class string, maxhp int, skill []string) *Charac
 		Skill:     skill,
 		Equipment: Equipment{
 			Head:  "None",
-			Torso: "None",
+			Chest: "None",
 			Feet:  "None",
 		},
 	}
