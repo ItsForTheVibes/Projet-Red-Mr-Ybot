@@ -12,13 +12,6 @@ type Equipment struct {
 }
 
 func EquipItem(c *Character, item string) {
-	recipe, exists := items.FindRecipe(item)
-
-	if !exists {
-		fmt.Println("[-] This item cannot be equipped.")
-		return
-	}
-
 	if CountItem(c, item) == 0 {
 		fmt.Println("[-] Equipment not found in inventory.")
 		return
@@ -35,11 +28,20 @@ func EquipItem(c *Character, item string) {
 
 	case items.ProxyBoots:
 		slot = &c.Equipment.Feet
+
+	default:
+		fmt.Println("[-] This item cannot be equipped.")
+		return
 	}
 
+	// Remove the new equipment from inventory first.
+	// This creates space for the old equipment if the inventory was full.
+	RemoveItem(c, item, 1)
+
+	// If something is already equipped in this slot,
+	// remove its HP bonus and return it to inventory.
 	if *slot != "" {
 		oldItem := *slot
-		oldRecipe, _ := items.FindRecipe(oldItem)
 
 		c.MaxHP -= equipmentBonus(oldItem)
 
@@ -53,24 +55,21 @@ func EquipItem(c *Character, item string) {
 			"[>] %s returned to inventory.\n",
 			oldItem,
 		)
-
-		_ = oldRecipe
 	}
 
-	RemoveItem(c, item, 1)
-
+	// Equip the new item.
 	*slot = item
-	c.MaxHP += equipmentBonus(item)
+
+	bonus := equipmentBonus(item)
+
+	c.MaxHP += bonus
 
 	fmt.Printf("[+] Equipped: %s\n", item)
-	fmt.Printf("[+] Maximum HP +%d\n", recipeHPBonus(recipe.Name))
+	fmt.Printf("[+] Maximum HP +%d\n", bonus)
+	fmt.Printf("[+] HP: %d/%d\n", c.CurrentHP, c.MaxHP)
 }
 
 func equipmentBonus(item string) int {
-	return recipeHPBonus(item)
-}
-
-func recipeHPBonus(item string) int {
 	switch item {
 	case items.NeuralVisor:
 		return 10
@@ -80,7 +79,8 @@ func recipeHPBonus(item string) int {
 
 	case items.ProxyBoots:
 		return 15
-	}
 
-	return 0
+	default:
+		return 0
+	}
 }

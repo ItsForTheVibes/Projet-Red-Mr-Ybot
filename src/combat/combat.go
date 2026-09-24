@@ -149,27 +149,17 @@ func combatInventory(
 	enemy *Monster,
 ) bool {
 	fmt.Println()
-	fmt.Println("=== COMBAT INVENTORY ===")
+	fmt.Println("╔══════════════════════════════════════════════╗")
+	fmt.Println("║ COMBAT // STORAGE ACCESS                    ║")
+	fmt.Println("╚══════════════════════════════════════════════╝")
+	fmt.Println()
 
-	usableItems := []string{}
-
-	for _, item := range c.Inventory {
-		if item == items.AntiVirusPatch ||
-			item == items.CorruptionScript {
-
-			usableItems = append(
-				usableItems,
-				item,
-			)
-		}
-	}
-
-	if len(usableItems) == 0 {
-		fmt.Println("[!] No combat items available.")
+	if len(c.Inventory) == 0 {
+		fmt.Println("[!] Inventory empty.")
 		return false
 	}
 
-	for i, item := range usableItems {
+	for i, item := range c.Inventory {
 		fmt.Printf(
 			"[%d] %s\n",
 			i+1,
@@ -177,7 +167,9 @@ func combatInventory(
 		)
 	}
 
+	fmt.Println()
 	fmt.Println("[0] Return")
+	fmt.Println()
 
 	var choice int
 
@@ -188,12 +180,12 @@ func combatInventory(
 		return false
 	}
 
-	if choice < 1 || choice > len(usableItems) {
+	if choice < 1 || choice > len(c.Inventory) {
 		fmt.Println("[-] Invalid item.")
 		return false
 	}
 
-	item := usableItems[choice-1]
+	item := c.Inventory[choice-1]
 
 	switch item {
 	case items.AntiVirusPatch:
@@ -201,19 +193,24 @@ func combatInventory(
 		return true
 
 	case items.CorruptionScript:
-		if !character.RemoveItem(
+		character.RemoveItem(
 			c,
 			items.CorruptionScript,
 			1,
-		) {
-			return false
-		}
+		)
 
 		PoisonPot(enemy)
-		return true
-	}
 
-	return false
+		return true
+
+	default:
+		fmt.Printf(
+			"[!] %s cannot be used during combat.\n",
+			item,
+		)
+
+		return false
+	}
 }
 
 func PoisonPot(enemy *Monster) {
