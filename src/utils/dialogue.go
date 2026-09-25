@@ -24,13 +24,13 @@ func Dialogue() {
                                 ╚═╝  ╚═╝╚══════╝╚═════╝
 
                   ┌──────────────────────────────────────────────────────┐
-                  │              R E S T R I C T E D   N E T           │
+                  │              R E S T R I C T E D   N E T             │
                   │                                                      │
                   │        > Connexion au réseau clandestin... OK        │
                   │        > Chiffrement de la connexion......... OK     │
-                  │        > Identification.................... INCONNUE  │
+                  │        > Identification.................... INCONNUE │
                   │                                                      │
-                  │                 [ ACCÈS AUTORISÉ ]                    │
+                  │                 [ ACCÈS AUTORISÉ ]                   │
                   └──────────────────────────────────────────────────────┘
 	`)
 	reader := bufio.NewReader(os.Stdin)
