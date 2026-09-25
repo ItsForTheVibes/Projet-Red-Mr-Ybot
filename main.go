@@ -6,6 +6,8 @@ import (
 )
 
 func main() {
+	utils.Dialogue()
+
 	c := character.CharacterCreation()
 
 	utils.Menu(c)
